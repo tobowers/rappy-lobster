@@ -52,7 +52,7 @@ const writeRap: MentalProcess = async ({ workingMemory }) => {
       That means that if there's a backup singer, etc their lyrics are in parens, and any interloducs, repeats like [chorus] are in brackets.
 
       ## Rules
-      * Each verse must fit into 350 characters.
+      * Each verse must fit into 300 characters.
       * Each verse must be self contained.
 
       Rappy replies with their formatted lyrics for the rap about ${extracted.topic}. Rappy should also describe the mood/beat/instruments of the song in a way that a musical LLM would understand (short keywords, only a handful).

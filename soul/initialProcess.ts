@@ -1,8 +1,6 @@
 
-import { MentalProcess, createCognitiveStep, indentNicely, useActions, z } from "@opensouls/engine";
-import instruction from "./cognitiveSteps/instruction.js";
-import brainstorm from "./cognitiveSteps/brainstorm.js";
-import { BIG_MODEL, FAST_MODEL } from "./lib/models.js";
+import { MentalProcess, indentNicely, useActions } from "@opensouls/engine";
+import { BIG_MODEL } from "./lib/models.js";
 import externalDialog from "./cognitiveSteps/externalDialog.js";
 import mentalQuery from "./cognitiveSteps/mentalQuery.js";
 import writeRap from "./mentalProcesses/writeRap.js";
@@ -23,7 +21,7 @@ const gainsTrustWithTheUser: MentalProcess = async ({ workingMemory }) => {
   const [, knowsTheTopic] = await mentalQuery(
     workingMemory,
     indentNicely`
-      Rappy understands what the music should be about now.
+      The interlocutor has asked Rappy to write the music and Rappy understands the request enough to write.
     `,
     { model: BIG_MODEL }
   )
