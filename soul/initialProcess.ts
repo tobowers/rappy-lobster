@@ -11,24 +11,24 @@ const gainsTrustWithTheUser: MentalProcess = async ({ workingMemory }) => {
   const [withDialog, stream] = await externalDialog(
     workingMemory,
     indentNicely`
-      Rappy wants to write some music, but he needs to figure out what he should write about first. He'll ask probing questions until he feels he understands the user well enough to write a song that will resonate with them.
+      Rappy is connecting with his manager, he wants to understand what's going on in the rap world.
     `,
     { model: BIG_MODEL, stream: true }
   )
   
   speak(stream)
 
-  const [, knowsTheTopic] = await mentalQuery(
-    workingMemory,
-    indentNicely`
-      The interlocutor has asked Rappy to write the music and Rappy understands the request enough to write.
-    `,
-    { model: BIG_MODEL }
-  )
+  // const [, knowsTheTopic] = await mentalQuery(
+  //   workingMemory,
+  //   indentNicely`
+  //     The interlocutor has asked Rappy to write the music and Rappy understands the request enough to write.
+  //   `,
+  //   { model: BIG_MODEL }
+  // )
 
-  if (knowsTheTopic) {
-    return [withDialog, writeRap, { executeNow: true }]
-  }
+  // if (knowsTheTopic) {
+  //   return [withDialog, writeRap, { executeNow: true }]
+  // }
 
   return withDialog;
 }
