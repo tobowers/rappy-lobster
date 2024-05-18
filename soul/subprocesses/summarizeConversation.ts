@@ -1,5 +1,6 @@
 
 import { ChatMessageRoleEnum, MentalProcess, WorkingMemory, createCognitiveStep, indentNicely, stripEntityAndVerb, stripEntityAndVerbFromStream, useActions, useProcessMemory } from "@opensouls/engine";
+import { FAST_MODEL } from "../lib/models.js";
 
 const conversationNotes = createCognitiveStep((existing: string) => {
   return {
@@ -79,9 +80,17 @@ const summarizesConversation: MentalProcess = async ({ workingMemory }) => {
 
   if (memory.memories.length > 9) {
     log("updating conversation notes");
-    [memory] = await internalMonologue(memory, { instructions: "What have I learned in this conversation.", verb: "noted" })
+    [memory] = await internalMonologue(
+      memory,
+      { instructions: "What have I learned in this conversation.", verb: "noted" },
+      { model: FAST_MODEL },
+    )
 
-    const [, updatedNotes] = await conversationNotes(memory, conversationModel.current)
+    const [, updatedNotes] = await conversationNotes(
+      memory,
+      conversationModel.current,
+      { model: FAST_MODEL }
+    )
 
     conversationModel.current = updatedNotes as string
 

@@ -4,9 +4,31 @@ import { BIG_MODEL } from "./lib/models.js";
 import externalDialog from "./cognitiveSteps/externalDialog.js";
 import mentalQuery from "./cognitiveSteps/mentalQuery.js";
 import writeRap from "./mentalProcesses/writeRap.js";
+import internalMonologue from "./cognitiveSteps/internalMonologue.js";
 
 const gainsTrustWithTheUser: MentalProcess = async ({ workingMemory }) => {
   const { speak, log } = useActions()
+
+  const [, knowsTheTopic] = await mentalQuery(
+    workingMemory,
+    indentNicely`
+      The Manager just suggested that Rappy goes to the studio.
+    `,
+    { model: BIG_MODEL }
+  )
+  log("would switch", knowsTheTopic)
+
+  if (knowsTheTopic) {
+    const [, notes] = await internalMonologue(
+      workingMemory,
+      indentNicely`
+        Rappy decided to write some music. He decides what his goal is.
+        Reply with only a 1-2 MAX sentence goal for Rappy's next track.
+      `,
+      { model: BIG_MODEL }
+    )
+    return [workingMemory, writeRap, { params: { firstGoal: notes }, executeNow: true }]
+  }
 
   const [withDialog, stream] = await externalDialog(
     workingMemory,
@@ -17,18 +39,6 @@ const gainsTrustWithTheUser: MentalProcess = async ({ workingMemory }) => {
   )
   
   speak(stream)
-
-  // const [, knowsTheTopic] = await mentalQuery(
-  //   workingMemory,
-  //   indentNicely`
-  //     The interlocutor has asked Rappy to write the music and Rappy understands the request enough to write.
-  //   `,
-  //   { model: BIG_MODEL }
-  // )
-
-  // if (knowsTheTopic) {
-  //   return [withDialog, writeRap, { executeNow: true }]
-  // }
 
   return withDialog;
 }

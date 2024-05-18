@@ -2,7 +2,7 @@ import { createCognitiveStep, WorkingMemory, ChatMessageRoleEnum, indentNicely, 
 
 const mentalQuery = createCognitiveStep((statement: string) => {
   const params = z.object({
-    isStatementTrue: z.boolean().describe(`Is the statement true or false?`),
+    isStatementTrue: z.boolean().describe(`Is the statement false or true?`),
   });
 
   return {
@@ -11,7 +11,7 @@ const mentalQuery = createCognitiveStep((statement: string) => {
         role: ChatMessageRoleEnum.System,
         name: name,
         content: indentNicely`
-          ${name} ponders the veracity of the following statement very carefully:
+          Model the mind of Rappy and decide if the Statement below is true or not.
           
           ## Statement
           > ${statement}

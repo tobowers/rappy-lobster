@@ -3,7 +3,7 @@ import { MentalProcess, createCognitiveStep, indentNicely, useActions, z } from 
 import { BIG_MODEL, FAST_MODEL } from "../lib/models.js";
 import externalDialog from "../cognitiveSteps/externalDialog.js";
 import mentalQuery from "../cognitiveSteps/mentalQuery.js";
-import writeRap from "../mentalProcesses/writeRap.js";
+import oldWriteRap from "./oldWriteRap.js";
 
 const followup: MentalProcess = async ({ workingMemory }) => {
   const { speak, log } = useActions()
@@ -27,7 +27,7 @@ const followup: MentalProcess = async ({ workingMemory }) => {
   )
 
   if (wantsChange) {
-    return [withDialog, writeRap, { executeNow: true }]
+    return [withDialog, oldWriteRap, { executeNow: true }]
   }
 
   return withDialog;
