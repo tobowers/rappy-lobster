@@ -16,8 +16,5 @@
   },
   "dependencies": {
     "@opensouls/engine": ">=0.1.30"
-  },
-  "soulEngine": {
-    "defaultModel": "tobowers/local-theta"
   }
 }

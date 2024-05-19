@@ -5,20 +5,24 @@ import externalDialog from "./cognitiveSteps/externalDialog.js";
 import mentalQuery from "./cognitiveSteps/mentalQuery.js";
 import writeRap from "./mentalProcesses/writeRap.js";
 import internalMonologue from "./cognitiveSteps/internalMonologue.js";
+import instruction from "./cognitiveSteps/instruction.js";
 
-const gainsTrustWithTheUser: MentalProcess = async ({ workingMemory }) => {
+const initialProcess: MentalProcess = async ({ workingMemory }) => {
   const { speak, log } = useActions()
 
-  const [, knowsTheTopic] = await mentalQuery(
+  const [, knowsTheTopic] = await instruction(
     workingMemory,
     indentNicely`
-      The Manager just suggested that Rappy goes to the studio.
+      ## Manager's Last Messge
+      ${workingMemory.slice(-1).at(0).content}
+
+      If the manager has indicated (just now) that it's time to go to the studio then reply with only the word "YES" otherwise reply with only the word "NO"
     `,
     { model: BIG_MODEL }
   )
   log("would switch", knowsTheTopic)
 
-  if (knowsTheTopic) {
+  if (knowsTheTopic === "YES") {
     const [, notes] = await internalMonologue(
       workingMemory,
       indentNicely`
@@ -27,6 +31,7 @@ const gainsTrustWithTheUser: MentalProcess = async ({ workingMemory }) => {
       `,
       { model: BIG_MODEL }
     )
+    log("goal: ", notes)
     return [workingMemory, writeRap, { params: { firstGoal: notes }, executeNow: true }]
   }
 
@@ -43,4 +48,4 @@ const gainsTrustWithTheUser: MentalProcess = async ({ workingMemory }) => {
   return withDialog;
 }
 
-export default gainsTrustWithTheUser
+export default initialProcess
